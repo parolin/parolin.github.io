@@ -4,4 +4,4 @@ The name `show cdp neighbors` came from the Cisco command with same name, used t
 
 I read a lot of blogs and articles that lot of engineers/authors/hackers wrote and it helped me a lot to learn new things and understand important fundamentals, and that is a way to give back and allow, like a CDP protocol, the exchange of information, the discovering of new peers, information and challenges.
 
-I hope you enjoy
+I hope you enjoy.
