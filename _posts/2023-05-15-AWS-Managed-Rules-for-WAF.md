@@ -39,13 +39,26 @@ We will test the following rules
 
 Below a breakdown of the rule, its intention and how we can test the rule.
 
-|Test #|Rule Name|Description|Payload to test the rule|
-|---|---|---|---|
-|1|NoUserAgent_HEADER|Inspects for requests that are missing the HTTP User-Agent header.| `curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/ -H "User-Agent: "`|
-|2|UserAgent_BadBots_HEADER|Inspects for common User-Agent header values that indicate that the request is a bad bot.|`curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/ -H "User-Agent: nessus"`|
-|3|GenericLFI_QUERYARGUMENTS|Inspects for the presence of Local File Inclusion (LFI) exploits in the query arguments.|`curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/\?a\=../../../`|
-|4|RestrictedExtensions_URIPATH|Inspects for requests whose URI paths contain system file extensions that are unsafe to read or run.|` curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/log.ini`|
-|5|CrossSiteScripting_QUERYARGUMENTS|Inspects the values of query arguments for common cross-site scripting (XSS) patterns.|` curl -vo /dev/null 'http://parolin-1941234859.us-east-1.elb.amazonaws.com/log.ini\?a\=<script>alert("hello")</script>'`|
+**Rule:**  `NoUserAgent_HEADER`
+**Description:** Inspects for requests that are missing the HTTP User-Agent header.
+**Payload for test:** `curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/ -H "User-Agent: "`
+
+**Rule:**  `UserAgent_BadBots_HEADER`
+**Description:** Inspects for common User-Agent header values that indicate that the request is a bad bot.
+**Payload for test:** `curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/ -H "User-Agent: nessus"`
+
+**Rule:**  `GenericLFI_QUERYARGUMENTS`
+**Description:** Inspects for the presence of Local File Inclusion (LFI) exploits in the query arguments.
+**Payload for test:** `curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/?a=../../../`
+
+**Rule:**  `RestrictedExtensions_URIPATH`
+**Description:** Inspects for requests whose URI paths contain system file extensions that are unsafe to read or run.
+**Payload for test:** `curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/log.ini`
+
+**Rule:**  `CrossSiteScripting_QUERYARGUMENTS`
+**Description:** Inspects the values of query arguments for common cross-site scripting (XSS) patterns.
+**Payload for test:** `curl -vo /dev/null 'http://parolin-1941234859.us-east-1.elb.amazonaws.com/log.ini\?a\=<script>alert("hello")</script>'`
+
 
 I am using my ALB's URL, so you need to adjust the command to reach out your own resource. 
 
@@ -85,11 +98,11 @@ Request that test `UserAgent_BadBots_HEADER` and `CrossSiteScripting_QUERYARGUME
 
 `curl -vo /dev/null 'http://parolin-1941234859.us-east-1.elb.amazonaws.com/?a\=<script>alert("hello")</script>' -H "User-Agent: nessus"`
 
-![](../images/AWS-Managed-Rules-for-WAF/ruleBadBotxXSS.png)
+![]{../images/AWS-Managed-Rules-for-WAF/ruleBadBotxXSS.png}
 
 As expected, the rule that blocked the request was the `UserAgent_BadBots_HEADER` that has a higher priority (comes first) in the rule group
 
 When using AMR rule groups, the rules that are displayed on the top are the ones that will block the request first. Based on the test, we can assume that the rules are evaluating requests in the same order that they are dissplayed on the rule group.
 
 
-Hope it helps.
+Hope it helps. 🤘
