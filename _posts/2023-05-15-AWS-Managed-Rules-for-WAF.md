@@ -53,7 +53,7 @@ Let's send a request that matches the rules `NoUserAgent_HEADER`and `GenericLFI_
 
 `curl -vo /dev/null 'http://parolin-1941234859.us-east-1.elb.amazonaws.com/?a=/../../test' -H "User-Agent: "`
 
-![]{../images/AWS-Managed-Rules-for-WAF/ruleNoUAxLFI.png}
+![](../images/AWS-Managed-Rules-for-WAF/ruleNoUAxLFI.png)
 
 As expected, the rule that blocked the request was the `NoUserAgent_HEADER` rule that has a higher priority (comes first) in the rule group
 
@@ -61,7 +61,7 @@ Request that test `UserAgent_BadBots_HEADER` and `GenericLFI_QUERYARGUMENTS`:
 
 `curl -vo /dev/null 'http://parolin-1941234859.us-east-1.elb.amazonaws.com/?a=/../../test' -H "User-Agent: nessus"`
 
-![]{../images/AWS-Managed-Rules-for-WAF/ruleBadBotsxLFI.png}
+![](../images/AWS-Managed-Rules-for-WAF/ruleBadBotsxLFI.png)
 
 As expected, the rule that blocked the request was the `UserAgent_BadBots_HEADER` that has a higher priority (comes first) in the rule group
 
@@ -69,7 +69,7 @@ Request that test `GenericLFI_QUERYARGUMENTS` and `RestrictedExtensions_URIPATH`
 
 `curl -vo /dev/null 'http://parolin-1941234859.us-east-1.elb.amazonaws.com/log.ini?a=/../../test'`
 
-![]{../images/AWS-Managed-Rules-for-WAF/ruleLFIxRestrictedExtensions.png}
+![](../images/AWS-Managed-Rules-for-WAF/ruleLFIxRestrictedExtensions.png)
 
 As expected, the rule that blocked the request was the `GenericLFI_QUERYARGUMENTS` that has a higher priority (comes first) in the rule group
 
@@ -77,7 +77,7 @@ Request that test `RestrictedExtensions_URIPATH` and `CrossSiteScripting_QUERYAR
 
 `curl -vo /dev/null 'http://parolin-1941234859.us-east-1.elb.amazonaws.com/log.ini\?a\=<script>alert("hello")</script>'`
 
-![]{../images/AWS-Managed-Rules-for-WAF/ruleRestrictedExtensionxXSS.png}
+![](../images/AWS-Managed-Rules-for-WAF/ruleRestrictedExtensionxXSS.png)
 
 As expected, the rule that blocked the request was the `RestrictedExtensions_URIPATH` that has a higher priority (comes first) in the rule group
 
@@ -85,7 +85,7 @@ Request that test `UserAgent_BadBots_HEADER` and `CrossSiteScripting_QUERYARGUME
 
 `curl -vo /dev/null 'http://parolin-1941234859.us-east-1.elb.amazonaws.com/?a\=<script>alert("hello")</script>' -H "User-Agent: nessus"`
 
-![]{../images/AWS-Managed-Rules-for-WAF/ruleBadBotxXSS.png}
+![](../images/AWS-Managed-Rules-for-WAF/ruleBadBotxXSS.png)
 
 As expected, the rule that blocked the request was the `UserAgent_BadBots_HEADER` that has a higher priority (comes first) in the rule group
 
