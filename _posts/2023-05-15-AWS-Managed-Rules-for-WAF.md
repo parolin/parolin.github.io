@@ -39,11 +39,11 @@ We will test the following rules
 * `CrossSiteScripting_QUERYARGUMENTS`: Inspects the values of query arguments for common cross-site scripting (XSS) patterns.
 
 Below the payloads to test each rule:
-* `NoUserAgent_HEADER`: `curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/ -H "User-Agent: "`
-* `UserAgent_BadBots_HEADER`: `curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/ -H "User-Agent: nessus"`
-* `GenericLFI_QUERYARGUMENTS`: `curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/?a=../../../`
-* `RestrictedExtensions_URIPATH`: `curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/log.ini` 
-* `CrossSiteScripting_QUERYARGUMENTS`: `curl -vo /dev/null "http://parolin-1941234859.us-east-1.elb.amazonaws.com/log.ini\?a\=<script>alert("hello")</script>"`
+* **NoUserAgent_HEADER**: `curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/ -H "User-Agent: "`
+* **UserAgent_BadBots_HEADER**: `curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/ -H "User-Agent: nessus"`
+* **GenericLFI_QUERYARGUMENTS**: `curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/?a=../../../`
+* **RestrictedExtensions_URIPATH**: `curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/log.ini` 
+* **CrossSiteScripting_QUERYARGUMENTS**: `curl -vo /dev/null "http://parolin-1941234859.us-east-1.elb.amazonaws.com/log.ini\?a\=<script>alert("hello")</script>"`
 
 
 ### Test & Confirming
