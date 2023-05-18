@@ -39,10 +39,12 @@ We will test the following rules
 
 Below a breakdown of the rule, its intention and how we can test the rule.
 
-|**Rule:**|  `NoUserAgent_HEADER`|
+|Rule: |  `NoUserAgent_HEADER`|
 |---|---|
-|**Description:** |Inspects for requests that are missing the HTTP User-Agent header.|
-|**Payload for test:** |`curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/ -H "User-Agent: "`|
+|Description:  |  Inspects for requests that are missing the HTTP User-Agent header.|
+|Payload for test:  |  `curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/ -H "User-Agent: "`|
+
+
 
 |**Rule:**  | `UserAgent_BadBots_HEADER`|
 |---|---|
