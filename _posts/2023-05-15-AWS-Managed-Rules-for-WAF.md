@@ -15,7 +15,7 @@ By default, the rules that you write and add in your AWS WAF are evaluated by th
 
 I will not provide a step by step instruction of how to create the lab environment (adding WAF into ALB/CF/API Gw and setting up a WebACL). I may do it in another post, but as of now, if you need help in adding AMR rules into your AWS WAF WebACL, I recommend you to look into the [AWS WAF Official Documentation](https://docs.aws.amazon.com/waf/latest/developerguide/getting-started.html).
 
-Let's go for the tests.
+### Picking random rules.
 
 For the tests I am using an Application Load Balancer (ALB) with AWS WAF with 1 AMR rule group.
 
@@ -39,26 +39,33 @@ We will test the following rules
 
 Below a breakdown of the rule, its intention and how we can test the rule.
 
-**Rule:**  `NoUserAgent_HEADER`
-**Description:** Inspects for requests that are missing the HTTP User-Agent header.
-**Payload for test:** `curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/ -H "User-Agent: "`
+|**Rule:**|  `NoUserAgent_HEADER`|
+|---|---|
+|**Description:** |Inspects for requests that are missing the HTTP User-Agent header.|
+|**Payload for test:** |`curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/ -H "User-Agent: "`|
 
-**Rule:**  `UserAgent_BadBots_HEADER`
-**Description:** Inspects for common User-Agent header values that indicate that the request is a bad bot.
-**Payload for test:** `curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/ -H "User-Agent: nessus"`
+|**Rule:**  | `UserAgent_BadBots_HEADER`|
+|---|---|
+|**Description:**|Inspects for common User-Agent header values that indicate that the request is a bad bot.|
+|**Payload for test:**|`curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/ -H "User-Agent: nessus"`|
 
-**Rule:**  `GenericLFI_QUERYARGUMENTS`
-**Description:** Inspects for the presence of Local File Inclusion (LFI) exploits in the query arguments.
-**Payload for test:** `curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/?a=../../../`
+|**Rule:** | `GenericLFI_QUERYARGUMENTS`|
+|---|---|
+|**Description:** |Inspects for the presence of Local File Inclusion (LFI) exploits in the query arguments.|
+|**Payload for test:** |`curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/?a=../../../`|
 
-**Rule:**  `RestrictedExtensions_URIPATH`
-**Description:** Inspects for requests whose URI paths contain system file extensions that are unsafe to read or run.
-**Payload for test:** `curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/log.ini`
+|**Rule:**  |`RestrictedExtensions_URIPATH`|
+|---|---|
+|**Description:** |Inspects for requests whose URI paths contain system file extensions that are unsafe to read or run.|
+|**Payload for test:** |`curl -vo /dev/null http://parolin-1941234859.us-east-1.elb.amazonaws.com/log.ini`|
 
-**Rule:**  `CrossSiteScripting_QUERYARGUMENTS`
-**Description:** Inspects the values of query arguments for common cross-site scripting (XSS) patterns.
-**Payload for test:** `curl -vo /dev/null 'http://parolin-1941234859.us-east-1.elb.amazonaws.com/log.ini\?a\=<script>alert("hello")</script>'`
+|**Rule:**  |`CrossSiteScripting_QUERYARGUMENTS`|
+|---|---|
+|**Description:** |Inspects the values of query arguments for common cross-site scripting (XSS) patterns.|
+|**Payload for test:** |`curl -vo /dev/null 'http://parolin-1941234859.us-east-1.elb.amazonaws.com/log.ini\?a\=<script>alert("hello")</script>'`|
 
+
+### Test & Confirming
 
 I am using my ALB's URL, so you need to adjust the command to reach out your own resource. 
 
@@ -68,7 +75,9 @@ Let's send a request that matches the rules `NoUserAgent_HEADER`and `GenericLFI_
 
 ![](../images/AWS-Managed-Rules-for-WAF/ruleNoUAxLFI.png)
 
-As expected, the rule that blocked the request was the `NoUserAgent_HEADER` rule that has a higher priority (comes first) in the rule group
+*As expected, the rule that blocked the request was the `NoUserAgent_HEADER` rule that has a higher priority (comes first) in the rule group.*
+
+---
 
 Request that test `UserAgent_BadBots_HEADER` and `GenericLFI_QUERYARGUMENTS`:
 
@@ -76,7 +85,9 @@ Request that test `UserAgent_BadBots_HEADER` and `GenericLFI_QUERYARGUMENTS`:
 
 ![](../images/AWS-Managed-Rules-for-WAF/ruleBadBotsxLFI.png)
 
-As expected, the rule that blocked the request was the `UserAgent_BadBots_HEADER` that has a higher priority (comes first) in the rule group
+*As expected, the rule that blocked the request was the `UserAgent_BadBots_HEADER` that has a higher priority (comes first) in the rule group*
+
+---
 
 Request that test `GenericLFI_QUERYARGUMENTS` and `RestrictedExtensions_URIPATH`
 
@@ -84,7 +95,9 @@ Request that test `GenericLFI_QUERYARGUMENTS` and `RestrictedExtensions_URIPATH`
 
 ![](../images/AWS-Managed-Rules-for-WAF/ruleLFIxRestrictedExtensions.png)
 
-As expected, the rule that blocked the request was the `GenericLFI_QUERYARGUMENTS` that has a higher priority (comes first) in the rule group
+*As expected, the rule that blocked the request was the `GenericLFI_QUERYARGUMENTS` that has a higher priority (comes first) in the rule group*
+
+---
 
 Request that test `RestrictedExtensions_URIPATH` and `CrossSiteScripting_QUERYARGUMENTS`
 
@@ -92,17 +105,22 @@ Request that test `RestrictedExtensions_URIPATH` and `CrossSiteScripting_QUERYAR
 
 ![](../images/AWS-Managed-Rules-for-WAF/ruleRestrictedExtensionxXSS.png)
 
-As expected, the rule that blocked the request was the `RestrictedExtensions_URIPATH` that has a higher priority (comes first) in the rule group
+*As expected, the rule that blocked the request was the `RestrictedExtensions_URIPATH` that has a higher priority (comes first) in the rule group*
+
+---
 
 Request that test `UserAgent_BadBots_HEADER` and `CrossSiteScripting_QUERYARGUMENTS`
 
 `curl -vo /dev/null 'http://parolin-1941234859.us-east-1.elb.amazonaws.com/?a\=<script>alert("hello")</script>' -H "User-Agent: nessus"`
 
-![]{../images/AWS-Managed-Rules-for-WAF/ruleBadBotxXSS.png}
+![](../images/AWS-Managed-Rules-for-WAF/ruleBadBotxXSS.png)
 
-As expected, the rule that blocked the request was the `UserAgent_BadBots_HEADER` that has a higher priority (comes first) in the rule group
+*As expected, the rule that blocked the request was the `UserAgent_BadBots_HEADER` that has a higher priority (comes first) in the rule group*
+
+---
 
 When using AMR rule groups, the rules that are displayed on the top are the ones that will block the request first. Based on the test, we can assume that the rules are evaluating requests in the same order that they are dissplayed on the rule group.
 
 
 Hope it helps. 🤘
+
