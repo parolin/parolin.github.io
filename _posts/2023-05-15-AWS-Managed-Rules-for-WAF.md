@@ -100,7 +100,7 @@ Request that test `UserAgent_BadBots_HEADER` and `CrossSiteScripting_QUERYARGUME
 
 ---
 
-When using AMR rule groups, the rules that are displayed on the top are the ones that will block the request first. Based on the test, we can assume that the rules are evaluating requests in the same order that they are dissplayed on the rule group.
+When using AMR rule groups, the rules that are displayed on the top are the ones that will block the request first. Based on the test, we can assume that the rules are evaluating requests in the same order that they are displayed on the rule group.
 
 
 Hope it helps. 🤘
