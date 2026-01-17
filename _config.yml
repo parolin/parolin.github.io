@@ -14,6 +14,8 @@ avatar: https://raw.githubusercontent.com/parolin/parolin.github.io/master/image
 # Flags below are optional
 #
 
+excerpt_separator: "<!--more-->"
+
 # Includes an icon in the footer for each username you enter
 footer-links:
   dribbble:
