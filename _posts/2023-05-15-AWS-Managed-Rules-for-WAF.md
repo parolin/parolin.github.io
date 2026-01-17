@@ -11,6 +11,8 @@ Does not matter how obvious it may sound, you should never assume something. Alw
 
 That is what we will try to do here.
 
+<!--more-->
+
 By default, the rules that you write and add in your AWS WAF are evaluated by the "priority" assigned to each rule. The rule with the lowest priority value is evaluated first, followed by the rule with the next lowest priority value, and so on. Would the same apply for the AMR? That is easy to check and validate.
 
 I will not provide a step by step instruction of how to create the lab environment (adding WAF into ALB/CF/API Gw and setting up a WebACL). I may do it in another post, but as of now, if you need help in adding AMR rules into your AWS WAF WebACL, I recommend you to look into the [AWS WAF Official Documentation](https://docs.aws.amazon.com/waf/latest/developerguide/getting-started.html).
